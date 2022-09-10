@@ -3,6 +3,7 @@ var expect = chai.expect;
 describe("My Functions", function () {
   describe("#assignValue", function () {
     it("Should make sure that 52 card values are made.", function () {
+        console.log("Testing the assignValue function...");
       let testCards = new Card();
       testCards.assignValue();
       expect(testCards.cardValue.length).to.equal(52);
