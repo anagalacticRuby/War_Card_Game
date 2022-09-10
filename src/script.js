@@ -12,14 +12,17 @@ class Card {
     //assignValue will populate an array that will hold 52 values, to represent 52 cards in a deck.
     //Once this is completed, the array can then be used for the Deck object.
     for (let i = 0; i < this.cardSuit.length; i++) {
-      console.log(`The current loop iteration is: ${i}`); //Prints current loop iteration to console
+      //console.log(`The current loop iteration is: ${i}`); //Prints current loop iteration to console
+      console.log(`Assigning values for ${this.cardSuit[i]} cards:`);
       for (let j = 0; j < 13; j++) {
         //Should run 13 times, because there are card values 1 through 13
-        console.log(`The current loop iteration is ${i} of ${j}`);
+        //console.log(`The current loop iteration is ${i} of ${j}`);
+        console.log(`A ${[j+1]} of ${this.cardSuit[i]} has been created.`);
         this.cardValue.push(j + 1);
       }
     }
     console.log(this.cardValue);
+    //This prints to console to make sure 52 cards have been created
   }
 }
 
@@ -35,7 +38,7 @@ class Deck {
     //It makes sense to think of Deck objects as Stacks, because like the programming stack, cards are drawn off the top.
   }
 
-  //The code for this function was obtained from https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+  //The code for the shuffleDeck function was obtained from https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
   shuffleDeck(deckArray) {
     let currentIndex = deckArray.length,
       randomIndex;
@@ -115,55 +118,55 @@ class Game {
 }
 
 function takeTurn(playerOne, playerTwo) {
-    //Check to make sure both players have cards left in their deck before the turn starts
-    let playerOneDraws = playerOne.drawCard();
-    let playerTwoDraws = playerTwo.drawCard();
-    //Draw the top card of both player's decks, store the returned values in variables to use in takeTurn()
+  //Check to make sure both players have cards left in their deck before the turn starts
+  let playerOneDraws = playerOne.drawCard();
+  let playerTwoDraws = playerTwo.drawCard();
+  //Draw the top card of both player's decks, store the returned values in variables to use in takeTurn()
+  console.log(
+    `Player one draws: ${playerOneDraws} \n Player two draws: ${playerTwoDraws}`
+  );
+  //Print what both players drew to console
+  if (playerOneDraws === playerTwoDraws) {
+    console.log("There is a draw. Neither player gets a point.");
+    //If the cards drawn are equal in value, no player gets a point.
+    //Print outcome of the draws to console
+  } else if (playerOneDraws > playerTwoDraws) {
+    console.log("Player one gets a point!");
+    playerOne.playerScore++;
+    //If player 1's drawn card has a value greater than player 2's drawn card, update player 1's score
     console.log(
-      `Player one draws: ${playerOneDraws} \n Player two draws: ${playerTwoDraws}`
+      `Player one's current score: ${playerOne.playerScore} \n Player two's current score: ${playerTwo.playerScore}`
     );
-    //Print what both players drew to console
-    if (playerOneDraws === playerTwoDraws) {
-      console.log("There is a draw. Neither player gets a point.");
-      //If the cards drawn are equal in value, no player gets a point.
-      //Print outcome of the draws to console
-    } else if (playerOneDraws > playerTwoDraws) {
-      console.log("Player one gets a point!");
-      playerOne.playerScore++;
-      //If player 1's drawn card has a value greater than player 2's drawn card, update player 1's score
-      console.log(
-        `Player one's current score: ${playerOne.playerScore} \n Player two's current score: ${playerTwo.playerScore}`
-      );
-      //Then print the current scores to console
-    } else {
-      console.log("Player two gets a point!");
-      playerTwo.playerScore++;
-      //Otherwise if player 2's drawn card has a value greater than player 1's drawn card, update player 2's score
-      console.log(
-        `Player one's current score: ${playerOne.playerScore} \n Player two's current score: ${playerTwo.playerScore}`
-      );
-      //Then print the current scores to console
-    }
+    //Then print the current scores to console
+  } else {
+    console.log("Player two gets a point!");
+    playerTwo.playerScore++;
+    //Otherwise if player 2's drawn card has a value greater than player 1's drawn card, update player 2's score
+    console.log(
+      `Player one's current score: ${playerOne.playerScore} \n Player two's current score: ${playerTwo.playerScore}`
+    );
+    //Then print the current scores to console
   }
+}
 
+//Here is the code that will create the cards, populate a deck, deal cards to players, and then start taking turns.
+firstCards = new Card();
+firstCards.assignValue();
+//Step 1: Create Cards
+//Step 2: Assign values to those cards
 
-  //Here is the code that will create the cards, populate a deck, deal cards to players, and then start taking turns.
-  firstCards = new Card();
-  firstCards.assignValue();
-  //Step 1: Create Cards
-  //Step 2: Assign values to those cards
+//console.log(firstCards); //Used to debug, making sure firstCards works properly
 
-  console.log(firstCards);
+gameDeck = new Deck();
+gameDeck.fillDeck(firstCards.cardValue);
+//console.log(gameDeck); //Used to debug, making sure gameDeck was populated with Cards
+gameDeck.shuffleDeck(gameDeck.cardStack);
 
-  gameDeck = new Deck();
-  gameDeck.fillDeck(firstCards.cardValue);
-  console.log(gameDeck);
-  gameDeck.shuffleDeck(gameDeck.cardStack);
+//console.log(gameDeck); //Used for debug, to print the contents of gameDeck
 
-  console.log(gameDeck);
-  //Step 3: Create a Deck
-  //Step 4: Populate Deck with the previously created and defined Cards from step 2
-  //Step 5: Randomize order of the Deck
+//Step 3: Create a Deck
+//Step 4: Populate Deck with the previously created and defined Cards from step 2
+//Step 5: Randomize order of the Deck
 
 playerOne = new Player("Player One");
 playerTwo = new Player("Player Two");
@@ -179,25 +182,33 @@ console.log(playerOne.playerTopCard); */
 
 //takeTurn(playerOne,playerTwo);
 
-
- while(playerOne.playerDeck.length !== 0 & playerTwo.playerDeck.length !== 0){
-    takeTurn(playerOne,playerTwo);
-    //Step 8: Until both players have an empty deck, take turns drawing cards and giving players points.
-} 
-console.log("There are no more cards to draw! Time to declare a winner.");
-if(playerOne.playerScore === playerTwo.playerScore){
-    console.log(`There is a Tie! How shocking! Both players had a score of ${playerOne.playerScore}`)
-    //In the rare event of a perfect tie, a unique message is printed along with the player scores.
+while (
+  (playerOne.playerDeck.length !== 0) &
+  (playerTwo.playerDeck.length !== 0)
+) {
+  takeTurn(playerOne, playerTwo);
+  //Step 8: Until both players have an empty deck, take turns drawing cards and giving players points.
 }
-else{
-    let winningPlayer = playerOne.playerScore > playerTwo.playerScore ? playerOne : playerTwo;
-//Step 9: After there are no more cards to draw (or turns to take), assign a winner
-    //Here, winningPlayer is assigned using a ternary operator
-    //Allowing a winner to be assigned without writing lots of code
-    //The result of the inequality will determine the result stored in winningPlayer
-    console.log(`The final scores of both players are: \n
+console.log("There are no more cards to draw! Time to declare a winner.");
+if (playerOne.playerScore === playerTwo.playerScore) {
+  console.log(
+    `There is a Tie! How shocking! Both players had a score of ${playerOne.playerScore}`
+  );
+  //Print a custom message for tied games
+  if(playerOne.playerScore === 13 && playerTwo.playerScore === 13){
+    console.log(`Wow! A perfect game! That's incredibly rare.`);
+  }
+  //In the rare event of a perfect tie, a unique message is printed along with the previous tie game message.
+} else {
+  let winningPlayer =
+    playerOne.playerScore > playerTwo.playerScore ? playerOne : playerTwo;
+  //Step 9: After there are no more cards to draw (or turns to take), assign a winner
+  //Here, winningPlayer is assigned using a ternary operator
+  //Allowing a winner to be assigned without writing lots of code
+  //The result of the inequality will determine the result stored in winningPlayer
+  console.log(`The final scores of both players are: \n
     ${playerOne.playerName}'s score: ${playerOne.playerScore} \n
     ${playerTwo.playerName}'s score: ${playerTwo.playerScore} \n
     The winner is ${winningPlayer.playerName}, with their score of ${winningPlayer.playerScore}!`);
-    //Step 10: Print the final scores for both players, then print the name and score of the winning player.
+  //Step 10: Print the final scores for both players, then print the name and score of the winning player.
 }
